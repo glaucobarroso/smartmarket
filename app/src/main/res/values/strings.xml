@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Smart Market</string>
+    <string name="meli_app_id">7164282521643532</string>
+    <string name="meli_redirect_uri">https://smartmarket.000webhostapp.com/</string>
+</resources>
