@@ -2,4 +2,13 @@
     <string name="app_name">Smart Market</string>
     <string name="meli_app_id">7164282521643532</string>
     <string name="meli_redirect_uri">https://smartmarket.000webhostapp.com/</string>
+    <string name="shipping_answer_prefix">O Frete </string>
+    <string name="shipping_answer_cost"> fica R$ </string>
+    <string name="shipping_answer_estimate"> e a previsão de entrega dos Correios é de </string>
+    <string name="shipping_answer_estimate_offset"> a </string>
+    <string name="shipping_answer_estimate_suffix"> dias. </string>
+    <plurals name="shipping_answer">
+        <item quantity="one">O Frete %1$s fica R$ %2$s e a previsão de entrega dos Correios é de %3$d dias.</item>
+        <item quantity="other">O Frete %1$s fica R$ %2$s e a previsão de entrega dos Correios é entre %3$d e %4$d dias úteis.</item>
+    </plurals>
 </resources>
