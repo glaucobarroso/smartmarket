@@ -1,24 +1,31 @@
 package com.smartmarket;
 
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
 
-import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;
-import com.smartmarket.data.question.Shipping;
+import com.smartmarket.data.item.Item;
+import com.smartmarket.data.question.Questions;
+import com.smartmarket.ui.QuestionUIData;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
     // Request code used to receive callbacks from the SDK
     private static final int REQUEST_CODE = 999;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +33,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Meli.initializeSDK(this);
         Meli.startLogin(this, REQUEST_CODE);
-        int a = 1;
         new RequestClass(Meli.getCurrentIdentity(this)).start();
+
+        /*List<String> test = new ArrayList<String>();
+        for (int i = 0; i < 25; i++) {
+            test.add("teste");
+        }*/
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                List<QuestionUIData> questionsData = (List<QuestionUIData>) msg.obj;
+                QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, questionsData);
+                ListView listView = (ListView) findViewById(R.id.activity_main);
+                listView.setAdapter(adapter);
+            }
+        };
     }
 
     class RequestClass extends Thread {
@@ -41,8 +61,46 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             QuestionManager questionManager = new QuestionManager(mIdentity);
-            List<Shipping.Option> options = questionManager.getShippingOptions("MLB820966508", "13023240", "1");
-            String answer = questionManager.buildShippingAnswer(getResources(), options);
+            final ItemsManager itemsManager = new ItemsManager(mIdentity);
+            final ConcurrentHashMap<String, QuestionUIData> uiDataHashMap = new ConcurrentHashMap<String, QuestionUIData>();
+            List<Questions.Question> questions = questionManager.getQuestions();
+            ExecutorService executorService = Executors.newCachedThreadPool();
+            final List<QuestionUIData> questionsUiList = Collections.synchronizedList(new ArrayList<QuestionUIData>());
+            for (final Questions.Question question : questions) {
+                String itemId = question.getItemId();
+                QuestionUIData data = uiDataHashMap.get(itemId);
+                if (data == null) {
+                    executorService.execute(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Item item = itemsManager.getItem(question.getItemId());
+                                                    String title = item.getTitle();
+                                                    String text = question.getText();
+                                                    QuestionUIData questionUIData = new QuestionUIData();
+                                                    questionUIData.setItemTitle(title);
+                                                    questionUIData.setQuestionText(text);
+                                                    uiDataHashMap.put(question.getItemId(), questionUIData);
+                                                    questionsUiList.add(questionUIData);
+                                                }
+                                            }
+                    );
+                } else {
+                    QuestionUIData questionUIData = new QuestionUIData();
+                    questionUIData.setQuestionText(question.getText());
+                    questionUIData.setItemTitle(data.getItemTitle());
+                    questionsUiList.add(questionUIData);
+                }
+
+            }
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(3, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Message msg = mHandler.obtainMessage();
+            msg.obj = questionsUiList;
+            mHandler.sendMessage(msg);
         }
     }
 

@@ -3,25 +3,22 @@ package com.smartmarket;
 import android.content.res.Resources;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;
 import com.smartmarket.data.question.Questions;
 import com.smartmarket.data.question.Shipping;
 
-import java.net.HttpURLConnection;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.HttpURLConnection;
 import java.util.List;
 
 /**
  * Created by Glauco on 16/12/2016.
  */
 
-public class QuestionManager {
+public class QuestionManager extends Manager{
 
     private final String ALL_QUESTIONS_FORMAT_STR = "/questions/search?seller_id=%s&access_token=%s";
     private final String SHIPPING_CALCULATOR_FORMAT_STR = "/items/%s/shipping_options?&zip_code=%s&quantity=%s";
@@ -32,13 +29,8 @@ public class QuestionManager {
     private final String HOUR_UNIT = "hour";
     public final int DAY_HOURS = 24;
 
-    private Identity mIdentity;
-    private Gson mGson;
-
-    // private
     public QuestionManager(Identity identity) {
-        mIdentity = identity;
-        mGson = new Gson();
+        super(identity);
     }
 
     private int answerQuestion(Long questionId, String text) {
@@ -55,10 +47,13 @@ public class QuestionManager {
         }
     }
 
-    public List<Questions.Question> getQuestions(String ... args) {
-        String content = get(ALL_QUESTIONS_FORMAT_STR, args);
-        Questions questions = mGson.fromJson(content, Questions.class);
-        return questions.getQuestions();
+    public List<Questions.Question> getQuestions() {
+        String content = get(ALL_QUESTIONS_FORMAT_STR, mIdentity.getUserId(), mIdentity.getAccessToken().getAccessTokenValue());
+        if (content != null) {
+            Questions questions = mGson.fromJson(content, Questions.class);
+            return questions.getQuestions();
+        }
+        return null;
     }
 
     public List<Shipping.Option> getShippingOptions(String ... args) {
@@ -100,12 +95,4 @@ public class QuestionManager {
         return builder.toString();
     }
 
-    public String get(String formatString, String ... args) {
-        String path = String.format(formatString, args);
-        ApiResponse response = Meli.get(path);
-        if (response.getResponseCode() == ApiResponse.ApiResponseCode.RESPONSE_CODE_SUCCESS) {
-            return response.getContent();
-        }
-        return null;
-    }
 }

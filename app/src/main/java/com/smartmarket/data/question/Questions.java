@@ -239,7 +239,7 @@ public class Questions {
         private String text;
         @SerializedName("id")
         @Expose
-        private Integer id;
+        private Long id;
         @SerializedName("deleted_from_listing")
         @Expose
         private Boolean deletedFromListing;
@@ -293,11 +293,11 @@ public class Questions {
             this.text = text;
         }
 
-        public Integer getId() {
+        public Long getId() {
             return id;
         }
 
-        public void setId(Integer id) {
+        public void setId(Long id) {
             this.id = id;
         }
 
