@@ -13,6 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Glauco on 16/12/2016.
@@ -25,6 +27,7 @@ public class QuestionManager extends Manager{
     private final String ANSWER_PATH = "/answers";
     private final String QUESTION_ID_TAG = "question_id";
     private final String QUESTION_TEXT_TAG = "text";
+    private final String CEP_REGEX = "\\d{5}[-\\s/]*\\d{3}";
 
     private final String HOUR_UNIT = "hour";
     public final int DAY_HOURS = 24;
@@ -61,6 +64,18 @@ public class QuestionManager extends Manager{
         if (content != null) {
             Shipping shipping = mGson.fromJson(content, Shipping.class);
             return shipping.getOptions();
+        }
+        return null;
+    }
+
+    public String getCep(String question) {
+        Pattern pattern = Pattern.compile(CEP_REGEX);
+        Matcher matcher = pattern.matcher(question);
+        if (matcher.find()) {
+            String cep = matcher.group();
+            if (cep != null) {
+                return cep.replaceAll("[^\\d.]", "");
+            }
         }
         return null;
     }
