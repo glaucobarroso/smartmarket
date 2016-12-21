@@ -9,8 +9,10 @@ import java.util.List;
 
 public class QuestionUIData {
 
-    public String itemTitle;
-    public String question;
+    private String itemTitle;
+    private String itemId;
+    private String question;
+
 
     public String getItemTitle() {
         return itemTitle;
@@ -26,6 +28,14 @@ public class QuestionUIData {
 
     public void setQuestionText(String question) {
         this.question = question;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
 }

@@ -16,6 +16,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AnswerQuestionActivity"></activity>
+
         <activity
             android:name="com.mercadolibre.android.sdk.MercadoLibreActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize"

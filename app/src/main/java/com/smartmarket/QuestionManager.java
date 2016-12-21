@@ -3,6 +3,7 @@ package com.smartmarket;
 import android.content.res.Resources;
 
 import com.google.gson.Gson;
+import com.mercadolibre.android.sdk.AccessToken;
 import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;

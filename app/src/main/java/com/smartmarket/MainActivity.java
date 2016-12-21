@@ -5,7 +5,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;
@@ -24,8 +27,9 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     // Request code used to receive callbacks from the SDK
-    private static final int REQUEST_CODE = 999;
+    public static final int REQUEST_CODE = 999;
     private Handler mHandler;
+    List<QuestionUIData> mQuestionsDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +38,27 @@ public class MainActivity extends AppCompatActivity {
         Meli.initializeSDK(this);
         Meli.startLogin(this, REQUEST_CODE);
         new RequestClass(Meli.getCurrentIdentity(this)).start();
+        ListView listView = (ListView) findViewById(R.id.activity_main);
+        final Intent intent = new Intent(this, AnswerQuestionActivity.class);
 
-        /*List<String> test = new ArrayList<String>();
-        for (int i = 0; i < 25; i++) {
-            test.add("teste");
-        }*/
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TextView questionTextView = (TextView) view.findViewById(R.id.questionItemText);
+                QuestionUIData uiData = mQuestionsDataList.get(i);
+                String question = questionTextView.getText().toString();
+                intent.putExtra(AnswerQuestionActivity.ITEMID_TAG, uiData.getItemId());
+                intent.putExtra(AnswerQuestionActivity.QUESTION_TAG, questionTextView.getText().toString());
+                startActivity(intent);
+
+            }
+        });
+
         mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                List<QuestionUIData> questionsData = (List<QuestionUIData>) msg.obj;
-                QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, questionsData);
+                mQuestionsDataList = (List<QuestionUIData>) msg.obj;
+                QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, mQuestionsDataList);
                 ListView listView = (ListView) findViewById(R.id.activity_main);
                 listView.setAdapter(adapter);
             }
@@ -67,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             ExecutorService executorService = Executors.newCachedThreadPool();
             final List<QuestionUIData> questionsUiList = Collections.synchronizedList(new ArrayList<QuestionUIData>());
             for (final Questions.Question question : questions) {
-                String itemId = question.getItemId();
+                final String itemId = question.getItemId();
                 QuestionUIData data = uiDataHashMap.get(itemId);
                 if (data == null) {
                     executorService.execute(new Runnable() {
@@ -79,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                                                     QuestionUIData questionUIData = new QuestionUIData();
                                                     questionUIData.setItemTitle(title);
                                                     questionUIData.setQuestionText(text);
+                                                    questionUIData.setItemId(itemId);
                                                     uiDataHashMap.put(question.getItemId(), questionUIData);
                                                     questionsUiList.add(questionUIData);
                                                 }
@@ -88,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     QuestionUIData questionUIData = new QuestionUIData();
                     questionUIData.setQuestionText(question.getText());
                     questionUIData.setItemTitle(data.getItemTitle());
+                    questionUIData.setItemId(itemId);
                     questionsUiList.add(questionUIData);
                 }
 
