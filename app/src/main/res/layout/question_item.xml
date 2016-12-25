@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:id="@+id/thumbnailLayout">
+
+        <ImageView
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:id="@+id/thumbnail" />
+    </LinearLayout>
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnailLayout"
+        android:layout_toRightOf="@+id/thumbnailLayout"
         android:id="@+id/questionItemTitle"
-        android:textColor="#ff0000" />
+        android:textColor="#000000"
+        android:textSize="15dip"
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/questionItemTitle"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnailLayout"
         android:id="@+id/questionItemText"
-        android:textColor="#ff0000" />
+        android:textColor="#000000"
+        android:textSize="10dip"/>
 
-</LinearLayout>
+</RelativeLayout>

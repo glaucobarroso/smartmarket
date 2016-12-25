@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':mercadolibre_android_sdk2'
+project(':mercadolibre_android_sdk2').projectDir = new File('mercadolibre_android_sdk')

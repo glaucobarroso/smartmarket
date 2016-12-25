@@ -13,6 +13,7 @@ import com.smartmarket.data.question.Shipping;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,18 +38,21 @@ public class QuestionManager extends Manager{
         super(identity);
     }
 
-    private int answerQuestion(Long questionId, String text) {
+    public int answerQuestion(Long questionId, String text) {
         JSONObject answerJson = new JSONObject();
         try {
             answerJson.put(QUESTION_ID_TAG, questionId);
             answerJson.put(QUESTION_TEXT_TAG, text);
             String answer = answerJson.toString();
-            ApiResponse response = Meli.post(ANSWER_PATH, answer, mIdentity);
+            String answerUTF8 = new String(answer.getBytes("UTF-8"));
+            ApiResponse response = Meli.post(ANSWER_PATH, answerUTF8, mIdentity);
             return response.getResponseCode();
         } catch (JSONException e) {
             e.printStackTrace();
-            return ApiResponse.ApiResponseCode.RESPONSE_CODE_ERROR;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+        return ApiResponse.ApiResponseCode.RESPONSE_CODE_ERROR;
     }
 
     public List<Questions.Question> getQuestions() {

@@ -11,4 +11,10 @@
         <item quantity="one">O Frete %1$s fica R$ %2$s e a previsão de entrega dos Correios é de %3$d dias.</item>
         <item quantity="other">O Frete %1$s fica R$ %2$s e a previsão de entrega dos Correios é entre %3$d e %4$d dias úteis.</item>
     </plurals>
+    <string name="answer_send">Enviar</string>
+    <string name="answer_success">Resposta enviada com sucesso</string>
+    <string name="answer_sending">Enviando...</string>
+    <string name="answer_fail">Erro ao enviar resposta</string>
+    <string name="questions_loading">Carregando Perguntas...</string>
+    <string name="empty_answer_message">Você deve escrever uma resposta</string>
 </resources>
