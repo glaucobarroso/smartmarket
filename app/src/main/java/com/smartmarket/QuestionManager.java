@@ -26,6 +26,7 @@ public class QuestionManager extends Manager{
 
     private final String ALL_QUESTIONS_FORMAT_STR = "/questions/search?seller_id=%s&access_token=%s";
     private final String SHIPPING_CALCULATOR_FORMAT_STR = "/items/%s/shipping_options?&zip_code=%s&quantity=%s";
+    private final String QUESTIONS_BY_USER_FORMAT_STR = "/questions/search?item=%s&from=%s";
     private final String ANSWER_PATH = "/answers";
     private final String QUESTION_ID_TAG = "question_id";
     private final String QUESTION_TEXT_TAG = "text";
@@ -81,6 +82,15 @@ public class QuestionManager extends Manager{
             if (cep != null) {
                 return cep.replaceAll("[^\\d.]", "");
             }
+        }
+        return null;
+    }
+
+    public List<Questions.Question> getQuestionsByUser(String itemId, Integer buyerId) {
+        String content = get(QUESTIONS_BY_USER_FORMAT_STR, itemId, String.valueOf(buyerId));
+        if (content != null) {
+            Questions questions = mGson.fromJson(content, Questions.class);
+            return questions.getQuestions();
         }
         return null;
     }

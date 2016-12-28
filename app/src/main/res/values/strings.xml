@@ -15,6 +15,8 @@
     <string name="answer_success">Resposta enviada com sucesso</string>
     <string name="answer_sending">Enviando...</string>
     <string name="answer_fail">Erro ao enviar resposta</string>
+    <string name="answer_hint">Escreva sua resposta</string>
     <string name="questions_loading">Carregando Perguntas...</string>
     <string name="empty_answer_message">Você deve escrever uma resposta</string>
+    <string name="loading">Carregando...</string>
 </resources>

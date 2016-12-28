@@ -15,15 +15,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Meli;
+import com.smartmarket.data.question.ChatMessage;
+import com.smartmarket.data.question.Questions;
 import com.smartmarket.data.question.Shipping;
 import com.smartmarket.ui.QuestionUIData;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,6 +42,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
     private static final String SHIPPING_PATTERN = "xfrete";
     private static final int SHIPPING_TEXT = 0;
     private static final int ANSWER_SENT = 1;
+    private static final int CHAT_LOADED = 2;
 
     private EditText mAnswer;
     private QuestionUIData mData;
@@ -47,11 +52,13 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
     private Button mSend;
     private Resources mResources;
     private ProgressDialog mProgress;
+    private ListView mChat;
 
     private String mAnswerEmptyMsg;
     private String mAnswerSuccessMsg;
     private String mAnswerFailMsg;
     private String mAnswerSendingMsg;
+    private String mLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +71,12 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
         mShippingPattern = Pattern.compile(SHIPPING_PATTERN);
         mProgress = new ProgressDialog(this);
 
-        TextView questionTextView = (TextView) findViewById(R.id.question);
-        questionTextView.setText(mData.getQuestion());
-        mSend = (Button) findViewById(R.id.button_answer);
+        mChat = (ListView) findViewById(R.id.chat);
+//        TextView questionTextView = (TextView) findViewById(R.id.question);
+//        questionTextView.setText(mData.getQuestion());
+        mSend = (Button) findViewById(R.id.answer_button);
         mSend.setOnClickListener(this);
-        mAnswer = (EditText) findViewById(R.id.answer);
+        mAnswer = (EditText) findViewById(R.id.answer_text);
         mAnswer.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
@@ -106,10 +114,18 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
                             showDialog(mAnswerFailMsg, true);
                         }
                         break;
+                    case CHAT_LOADED:
+                        List<ChatMessage> messages = (List<ChatMessage>) msg.obj;
+                        ChatItemAdapter adapter = new ChatItemAdapter(getApplicationContext(), R.layout.chat_item, messages);
+                        mChat.setAdapter(adapter);
+                        mProgress.dismiss();
+                        break;
                 }
             }
         };
 
+        showProgressBar(mLoading);
+        loadChat(mData.getItemId(), mData.getFromId());
     }
 
     private void addShippingMessage(String question) {
@@ -135,10 +151,11 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
         }
     }
 
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.button_answer:
+            case R.id.answer_button:
                 final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this));
                 final String answerText;
                 showAnswerSendingDialog();
@@ -172,6 +189,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
         mAnswerFailMsg = mResources.getString(R.string.answer_fail);
         mAnswerSuccessMsg = mResources.getString(R.string.answer_success);
         mAnswerSendingMsg = mResources.getString(R.string.answer_sending);
+        mLoading = mResources.getString(R.string.loading);
     }
 
     private void showDialog(String message, final boolean finish) {
@@ -189,8 +207,42 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
     }
 
     private void showAnswerSendingDialog() {
-        mProgress.setMessage(mAnswerSendingMsg);
+        showProgressBar(mAnswerSendingMsg);
+    }
+
+    private void showProgressBar(String message) {
+        mProgress.setMessage(message);
         mProgress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         mProgress.show();
+    }
+
+    private void loadChat(final String itemId, final Integer buyerId) {
+        final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this));
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Questions.Question> questions = questionManager.getQuestionsByUser(itemId, buyerId);
+                List<ChatMessage> messages = new ArrayList<ChatMessage>();
+                if (questions != null) {
+                    for (Questions.Question question : questions) {
+                        ChatMessage chatQuestion = new ChatMessage();
+                        String questionText = question.getText();
+                        chatQuestion.setMessage(questionText);
+                        chatQuestion.setType(ChatMessage.BUYER_MESSAGE);
+                        messages.add(chatQuestion);
+                        if (question.getAnswer() != null) {
+                            ChatMessage chatAnswer = new ChatMessage();
+                            chatAnswer.setMessage(question.getAnswer().getText());
+                            chatAnswer.setType(ChatMessage.MY_MESSAGE);
+                            messages.add(chatAnswer);
+                        }
+                    }
+                }
+                Message msg = mHandler.obtainMessage();
+                msg.what = CHAT_LOADED;
+                msg.obj = messages;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
     }
 }

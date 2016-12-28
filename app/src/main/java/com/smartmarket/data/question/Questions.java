@@ -142,6 +142,12 @@ public class Questions {
         @SerializedName("seller")
         @Expose
         private String seller;
+        @SerializedName("item")
+        @Expose
+        private String item;
+        @SerializedName("from")
+        @Expose
+        private String from;
 
         public Integer getLimit() {
             return limit;
@@ -191,9 +197,26 @@ public class Questions {
             this.seller = seller;
         }
 
+        public String getItem() {
+            return item;
+        }
+
+        public void setItem(String item) {
+            this.item = item;
+        }
+
+        public String getFrom() {
+            return from;
+        }
+
+        public void setFrom(String from) {
+            this.from = from;
+        }
+
+
     }
 
-    class From {
+    public class From {
 
         @SerializedName("id")
         @Expose
@@ -248,7 +271,7 @@ public class Questions {
         private Boolean hold;
         @SerializedName("answer")
         @Expose
-        private Object answer;
+        private Answer answer;
         @SerializedName("from")
         @Expose
         private From from;
@@ -317,11 +340,11 @@ public class Questions {
             this.hold = hold;
         }
 
-        public Object getAnswer() {
+        public Answer getAnswer() {
             return answer;
         }
 
-        public void setAnswer(Object answer) {
+        public void setAnswer(Answer answer) {
             this.answer = answer;
         }
 
@@ -333,5 +356,41 @@ public class Questions {
             this.from = from;
         }
 
+    }
+
+    public class Answer {
+        @SerializedName("text")
+        @Expose
+        String text;
+        @SerializedName("status")
+        @Expose
+        String status;
+        @SerializedName("date_created")
+        @Expose
+        String date_created;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getDate_created() {
+            return date_created;
+        }
+
+        public void setDate_created(String date_created) {
+            this.date_created = date_created;
+        }
     }
 }

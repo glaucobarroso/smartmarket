@@ -18,12 +18,14 @@ public class QuestionUIData implements Parcelable {
     private String question;
     private Long questionId;
     private Bitmap thumbnail;
+    private Integer fromId;
 
     protected QuestionUIData(Parcel in) {
         itemTitle = in.readString();
         itemId = in.readString();
         question = in.readString();
         questionId = in.readLong();
+        fromId = in.readInt();
     }
 
     public QuestionUIData() { }
@@ -68,6 +70,14 @@ public class QuestionUIData implements Parcelable {
         this.thumbnail = thumbnail;
     }
 
+    public Integer getFromId() {
+        return fromId;
+    }
+
+    public void setFromId(Integer fromId) {
+        this.fromId = fromId;
+    }
+
 
     @Override
     public int describeContents() {
@@ -80,6 +90,7 @@ public class QuestionUIData implements Parcelable {
         dest.writeString(itemId);
         dest.writeString(question);
         dest.writeLong(questionId);
+        dest.writeInt(fromId);
     }
 
     public static final Creator<QuestionUIData> CREATOR = new Creator<QuestionUIData>() {

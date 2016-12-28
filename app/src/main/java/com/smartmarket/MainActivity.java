@@ -73,9 +73,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView questionTextView = (TextView) view.findViewById(R.id.questionItemText);
                 QuestionUIData uiData = mQuestionsDataList.get(i);
-                String question = questionTextView.getText().toString();
                 intent.putExtra(AnswerQuestionActivity.DATA_TAG, uiData);
                 startActivity(intent);
             }
@@ -108,14 +106,16 @@ public class MainActivity extends AppCompatActivity {
                                                         public void run() {
                                                             Item item = itemsManager.getItem(question.getItemId());
                                                             Bitmap thumbnail = itemsManager.getItemThumbnail(item);
-                                                            QuestionUIData questionUIData = fillQuestionUIData(question.getItemId(), item.getTitle(), question.getText(), question.getId(), thumbnail);
+                                                            QuestionUIData questionUIData = fillQuestionUIData(question.getItemId(), item.getTitle(),
+                                                                    question.getText(), question.getId(), thumbnail, question.getFrom().getId());
                                                             uiDataHashMap.put(question.getItemId(), questionUIData);
                                                             questionsUiList.add(questionUIData);
                                                         }
                                                     }
                             );
                         } else {
-                           // QuestionUIData questionUIData = fillQuestionUIData(question.getItemId(), data.getItemTitle(), question.getText(), question.getId());
+                            QuestionUIData questionUIData = fillQuestionUIData(question.getItemId(), data.getItemTitle(), question.getText(),
+                                    question.getId(), data.getThumbnail(), question.getFrom().getId());
                             questionsUiList.add(data);
                         }
                     }
@@ -133,13 +133,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private QuestionUIData fillQuestionUIData(String itemId, String itemTitle, String questionText, Long questionId, Bitmap thumbnail) {
+    private QuestionUIData fillQuestionUIData(String itemId, String itemTitle, String questionText, Long questionId, Bitmap thumbnail, Integer from) {
         QuestionUIData questionUIData = new QuestionUIData();
         questionUIData.setQuestionText(questionText);
         questionUIData.setItemTitle(itemTitle);
         questionUIData.setItemId(itemId);
         questionUIData.setQuestionId(questionId);
         questionUIData.setThumbnail(thumbnail);
+        questionUIData.setFromId(from);
         return questionUIData;
     }
 
