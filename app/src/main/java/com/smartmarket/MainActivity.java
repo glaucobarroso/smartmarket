@@ -39,21 +39,35 @@ public class MainActivity extends AppCompatActivity {
     private final String UNANSWERED = "UNANSWERED";
     private ProgressDialog mProgress;
     private String mQuestionsLoading;
+    private String mNoQuestions;
+    private TextView mNoQuestionsView;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadUIMessages();
+        mNoQuestionsView = (TextView) findViewById(R.id.noQuestions);
+        mListView = (ListView) findViewById(R.id.list);
         mProgress = new ProgressDialog(this);
         mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 mQuestionsDataList = (List<QuestionUIData>) msg.obj;
-                QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, mQuestionsDataList);
-                ListView listView = (ListView) findViewById(R.id.activity_main);
-                listView.setAdapter(adapter);
-                mProgress.dismiss();
+                if (mQuestionsDataList.size() > 0) {
+                    QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, mQuestionsDataList);
+                    mNoQuestionsView.setVisibility(View.GONE);
+                    mListView.setVisibility(View.VISIBLE);
+                    mListView.setAdapter(adapter);
+                    mProgress.dismiss();
+                } else {
+                    TextView noQuestions = (TextView) findViewById(R.id.noQuestions);
+                    mListView.setVisibility(View.GONE);
+                    noQuestions.setVisibility(View.VISIBLE);
+                    noQuestions.setText(mNoQuestions);
+                    mProgress.dismiss();
+                }
             }
         };
     }
@@ -67,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
             new RequestClass(Meli.getCurrentIdentity(this)).start();
         }
         showQuestionsLoadingDialog();
-        ListView listView = (ListView) findViewById(R.id.activity_main);
+        ListView listView = (ListView) findViewById(R.id.list);
         final Intent intent = new Intent(this, AnswerQuestionActivity.class);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadUIMessages() {
         Resources resources = getResources();
         mQuestionsLoading = resources.getString(R.string.questions_loading);
+        mNoQuestions = resources.getString(R.string.no_questions);
     }
 
     private void showQuestionsLoadingDialog() {
