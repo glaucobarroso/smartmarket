@@ -24,7 +24,9 @@ import java.util.regex.Pattern;
 
 public class QuestionManager extends Manager{
 
-    private final String ALL_QUESTIONS_FORMAT_STR = "/questions/search?seller_id=%s&access_token=%s";
+    public final static String UNANSWERED = "UNANSWERED";
+    public final static String EXPRESSO = "Expresso";
+    private final String ALL_QUESTIONS_FORMAT_STR = "/questions/search?seller_id=%s&status=%s&access_token=%s";
     private final String SHIPPING_CALCULATOR_FORMAT_STR = "/items/%s/shipping_options?&zip_code=%s&quantity=%s";
     private final String QUESTIONS_BY_USER_FORMAT_STR = "/questions/search?item=%s&from=%s";
     private final String ANSWER_PATH = "/answers";
@@ -57,7 +59,7 @@ public class QuestionManager extends Manager{
     }
 
     public List<Questions.Question> getQuestions() {
-        String content = get(ALL_QUESTIONS_FORMAT_STR, mIdentity.getUserId(), mIdentity.getAccessToken().getAccessTokenValue());
+        String content = get(ALL_QUESTIONS_FORMAT_STR, mIdentity.getUserId(), UNANSWERED, mIdentity.getAccessToken().getAccessTokenValue());
         if (content != null) {
             Questions questions = mGson.fromJson(content, Questions.class);
             return questions.getQuestions();
@@ -98,6 +100,7 @@ public class QuestionManager extends Manager{
     public String buildShippingAnswer(Resources resources, List<Shipping.Option> shippingOptions) {
         StringBuilder builder = new StringBuilder();
         int daysCount = 1;
+        Double expressoPrice = Double.valueOf(-1);
         for(Shipping.Option option : shippingOptions) {
             Double cost = option.getCost();
             Shipping.EstimatedDeliveryTime estimatedDelivery = option.getEstimatedDeliveryTime();
@@ -115,9 +118,23 @@ public class QuestionManager extends Manager{
                         // ugly workaround to force float with comma no matter which is the device's locale
                         String costStr = String.format("%.02f", cost).replace('.', ',');
 
-                        String answer = String.format(resources.getQuantityString(R.plurals.shipping_answer, daysCount, option.getName(), costStr, shippingTimeDays, shippingTimeDays + shippingTimeOffsetDays));
-                        builder.append(answer);
-                        builder.append(" ");
+                        boolean append = false;
+                        // ugly workaround to avoid suggestions with the same price
+                        // TODO improve this PLEASE
+                        if (EXPRESSO.equalsIgnoreCase(option.getName())) {
+                            expressoPrice = cost;
+                            append = true;
+                        } else if (expressoPrice.doubleValue() != cost.doubleValue()) {
+                            append = true;
+                        }
+
+                        if (append) {
+                            String answer = String.format(resources.getQuantityString(R.plurals.shipping_answer, daysCount, option.getName(), costStr, shippingTimeDays, shippingTimeDays + shippingTimeOffsetDays));
+                            daysCount = 1;
+                            builder.append(answer);
+                            builder.append(" ");
+                        }
+
                     }
                 }
             }

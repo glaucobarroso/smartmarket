@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     // Request code used to receive callbacks from the SDK
     public static final int REQUEST_CODE = 999;
     private final int MAX_WAIT_TIME = 2; // 2 minutes
-    private final String UNANSWERED = "UNANSWERED";
     private ProgressDialog mProgress;
     private String mQuestionsLoading;
     private String mNoQuestions;
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 ExecutorService executorService = Executors.newCachedThreadPool();
                 final List<QuestionUIData> questionsUiList = Collections.synchronizedList(new ArrayList<QuestionUIData>());
                 for (final Questions.Question question : questions) {
-                    if (UNANSWERED.equals(question.getStatus())){
+                    if (QuestionManager.UNANSWERED.equals(question.getStatus())){
                         QuestionUIData data = uiDataHashMap.get(question.getItemId());
                         if (data == null) {
                             executorService.execute(new Runnable() {

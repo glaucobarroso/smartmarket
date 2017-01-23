@@ -72,8 +72,6 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
         mProgress = new ProgressDialog(this);
 
         mChat = (ListView) findViewById(R.id.chat);
-//        TextView questionTextView = (TextView) findViewById(R.id.question);
-//        questionTextView.setText(mData.getQuestion());
         mSend = (Button) findViewById(R.id.answer_button);
         mSend.setOnClickListener(this);
         mAnswer = (EditText) findViewById(R.id.answer_text);
