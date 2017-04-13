@@ -9,6 +9,7 @@ import android.os.Message;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "SmartMarket";
     private Handler mHandler;
     List<QuestionUIData> mQuestionsDataList;
 
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog mProgress;
     private String mQuestionsLoading;
     private String mNoQuestions;
+    private String mGetQuestionsFailed;
     private TextView mNoQuestionsView;
     private ListView mListView;
 
@@ -54,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 mQuestionsDataList = (List<QuestionUIData>) msg.obj;
-                if (mQuestionsDataList.size() > 0) {
+                if (mQuestionsDataList == null) {
+                    TextView noQuestions = (TextView) findViewById(R.id.noQuestions);
+                    mListView.setVisibility(View.GONE);
+                    noQuestions.setVisibility(View.VISIBLE);
+                    noQuestions.setText(mGetQuestionsFailed);
+                    mProgress.dismiss();
+                } else if (mQuestionsDataList.size() > 0) {
                     QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, mQuestionsDataList);
                     mNoQuestionsView.setVisibility(View.GONE);
                     mListView.setVisibility(View.VISIBLE);
@@ -69,16 +78,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+        Meli.initializeSDK(this);
+        Meli.startLogin(this, REQUEST_CODE);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        Meli.initializeSDK(this);
-        if (!Meli.startLogin(this, REQUEST_CODE)) {
+//        Meli.initializeSDK(this);
+        //if (Meli.startLogin(this, REQUEST_CODE)) {
             new RequestClass(Meli.getCurrentIdentity(this)).start();
-        }
+        //}
         showQuestionsLoadingDialog();
         ListView listView = (ListView) findViewById(R.id.list);
         final Intent intent = new Intent(this, AnswerQuestionActivity.class);
@@ -103,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void run() {
+            Log.d(TAG, "Running...");
             QuestionManager questionManager = new QuestionManager(mIdentity);
             final ItemsManager itemsManager = new ItemsManager(mIdentity);
             final ConcurrentHashMap<String, QuestionUIData> uiDataHashMap = new ConcurrentHashMap<String, QuestionUIData>();
@@ -142,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 Message msg = mHandler.obtainMessage();
                 msg.obj = questionsUiList;
                 mHandler.sendMessage(msg);
+            } else {
+                Message msg = mHandler.obtainMessage();
+                msg.obj = null;
+                mHandler.sendMessage(msg);
             }
         }
     }
@@ -169,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         Resources resources = getResources();
         mQuestionsLoading = resources.getString(R.string.questions_loading);
         mNoQuestions = resources.getString(R.string.no_questions);
+        mGetQuestionsFailed = resources.getString(R.string.get_questions_failed);
     }
 
     private void showQuestionsLoadingDialog() {

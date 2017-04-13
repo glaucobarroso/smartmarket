@@ -77,6 +77,7 @@ public class QuestionManager extends Manager{
     }
 
     public String getCep(String question) {
+        question = question.replace(".", "");
         Pattern pattern = Pattern.compile(CEP_REGEX);
         Matcher matcher = pattern.matcher(question);
         if (matcher.find()) {
