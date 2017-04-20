@@ -220,7 +220,7 @@ public final class LoginWebDialogFragment extends DialogFragment {
                     processErrorFound();
                 }
                 return true;
-            } else if(url.contains("error")) {
+            } else if(url.contains("error") && !url.contains("show_captcha=Y")) {
                 processErrorFound();
             }
             //TODO here we might need to handle all possible error or unhandled re-directions.

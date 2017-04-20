@@ -7,21 +7,19 @@ import android.support.annotation.NonNull;
  */
 final class Config {
 
-
-    // The Login URL
-    private static final String LOGIN_URL = "http://auth.mercadolibre.com.ar/authorization?response_type=token&client_id=";
-
-
     /**
      * Prepare and retrieve the Login URL for the given application identifier.
      *
      * @param appId - the application identifier to create the URL for.
+     * @param authUrl: The authorization URL. Get from Meli.AuthUrls
      * @return - the created URL as a String value.
      */
     static
     @NonNull
-    String getLoginUrlForApplicationIdentifier(@NonNull String appId) {
-        return LOGIN_URL.concat(appId);
+    String getLoginUrlForApplicationIdentifier(@NonNull String appId, @NonNull Meli.AuthUrls authUrl) {
+        String login_url = authUrl.getValue();
+        login_url = login_url.concat("/authorization?response_type=token&client_id=");
+        return login_url.concat(appId);
     }
 
 }

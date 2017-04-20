@@ -28,30 +28,31 @@ import java.util.Map;
 public final class MercadoLibreActivity extends FragmentActivity {
 
     private static final String LOGIN_DIALOG_TAG = "login_dialog_fragment";
-
+    private static final String AUTH_URL_EXTRA = "auth_url";
 
     /**
      * Starts the {@link MercadoLibreActivity} with the login process set as current
      * workflow.
      */
-    static void login(@NonNull Activity client, int requestCode) {
+    static void login(@NonNull Activity client, int requestCode, Meli.AuthUrls authUrl) {
         Intent intent = new Intent(client, MercadoLibreActivity.class);
+        intent.putExtra(AUTH_URL_EXTRA, authUrl);
         client.startActivityForResult(intent, requestCode);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mercado_libre_activity);
 
-
         LoginWebDialogFragment loginFragment = null;
         if (savedInstanceState == null) {
             // Show the LoginDialog only when it's the init, let the
             // framework handle the rotation
             if (Meli.isSDKInitialized()) {
-                loginFragment = Meli.getLoginDialogNewInstance();
+                Intent intent = getIntent();
+                Meli.AuthUrls authUrl = (Meli.AuthUrls) intent.getSerializableExtra(AUTH_URL_EXTRA);
+                loginFragment = Meli.getLoginDialogNewInstance(authUrl);
                 loginFragment.show(getSupportFragmentManager(), LOGIN_DIALOG_TAG);
             }
         } else {

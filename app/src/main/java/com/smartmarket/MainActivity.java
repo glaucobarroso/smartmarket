@@ -78,18 +78,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        Meli.initializeSDK(this);
-        Meli.startLogin(this, REQUEST_CODE);
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-//        Meli.initializeSDK(this);
-        //if (Meli.startLogin(this, REQUEST_CODE)) {
+        Meli.initializeSDK(this);
+        if (!Meli.startLogin(this, REQUEST_CODE, Meli.AuthUrls.MLB)) {
             new RequestClass(Meli.getCurrentIdentity(this)).start();
-        //}
+        }
         showQuestionsLoadingDialog();
         ListView listView = (ListView) findViewById(R.id.list);
         final Intent intent = new Intent(this, AnswerQuestionActivity.class);

@@ -59,10 +59,12 @@ public class QuestionManager extends Manager{
     }
 
     public List<Questions.Question> getQuestions() {
-        String content = get(ALL_QUESTIONS_FORMAT_STR, mIdentity.getUserId(), UNANSWERED, mIdentity.getAccessToken().getAccessTokenValue());
-        if (content != null) {
-            Questions questions = mGson.fromJson(content, Questions.class);
-            return questions.getQuestions();
+        if (mIdentity != null) {
+            String content = get(ALL_QUESTIONS_FORMAT_STR, mIdentity.getUserId(), UNANSWERED, mIdentity.getAccessToken().getAccessTokenValue());
+            if (content != null) {
+                Questions questions = mGson.fromJson(content, Questions.class);
+                return questions.getQuestions();
+            }
         }
         return null;
     }

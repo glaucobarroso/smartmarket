@@ -74,6 +74,32 @@ public final class Meli {
 
     private static Identity meliIdentity = null;
 
+    public static enum AuthUrls {
+        MLA("https://auth.mercadolibre.com.ar"), // Argentina
+        MLB("https://auth.mercadolivre.com.br"), // Brasil
+        MCO("https://auth.mercadolibre.com.co"), // Colombia
+        MCR("https://auth.mercadolibre.com.cr"), // Costa Rica
+        MEC("https://auth.mercadolibre.com.ec"), // Ecuador
+        MLC("https://auth.mercadolibre.cl"), // Chile
+        MLM("https://auth.mercadolibre.com.mx"), // Mexico
+        MLU("https://auth.mercadolibre.com.uy"), // Uruguay
+        MLV("https://auth.mercadolibre.com.ve"), // Venezuela
+        MPA("https://auth.mercadolibre.com.pa"), // Panama
+        MPE("https://auth.mercadolibre.com.pe"), // Peru
+        MPT("https://auth.mercadolibre.com.pt"), // Portugal
+        MRD("https://auth.mercadolibre.com.do"); // Dominicana
+
+        private String value;
+
+
+        private AuthUrls(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    };
 
     /**
      * Sets the library in logging mode or not. If it's set to true,
@@ -306,8 +332,8 @@ public final class Meli {
      *
      * @return - thew created instance.
      */
-    static LoginWebDialogFragment getLoginDialogNewInstance() {
-        String loginUrl = Config.getLoginUrlForApplicationIdentifier(meliApplicationId);
+    static LoginWebDialogFragment getLoginDialogNewInstance(AuthUrls authUrl) {
+        String loginUrl = Config.getLoginUrlForApplicationIdentifier(meliApplicationId, authUrl);
         return LoginWebDialogFragment.newInstance(loginUrl, meliRedirectLoginUrl);
     }
 
@@ -385,10 +411,11 @@ public final class Meli {
      *                       is finished (whether is success or not) the {@link Activity#onActivityResult(int, int, Intent)}
      *                       callback will be called with the proper result code.
      * @param requestCode    - the request code used in the {@link Activity#startActivityForResult(Intent, int)} method.
+     * @param authUrl: - the authorization URL that will be used to call the correct domain for auth. Get the value from Meli.AuthUrls
      * @return - true if the login process has started. If the login process has ben executed successfully at least once
      * on the device, it skipped and the return value is false.
      */
-    public static boolean startLogin(@NonNull Activity activityClient, int requestCode) {
+    public static boolean startLogin(@NonNull Activity activityClient, int requestCode, AuthUrls authUrl) {
         boolean loginStarted = true;
         MeliLogger.log("Meli#startLogin(" + activityClient.getClass().getName() + ", " + requestCode + ")");
         if (isSDKInitialized()) {
@@ -396,12 +423,36 @@ public final class Meli {
             if (loadIdentity(activityClient)) {
                 loginStarted = false;
             } else {
-                MercadoLibreActivity.login(activityClient, requestCode);
+                MercadoLibreActivity.login(activityClient, requestCode, authUrl);
             }
         } else {
             throw new MeliException(SDK_NOT_INITIALIZED);
         }
         return loginStarted;
+    }
+
+    /**
+     * Starts the Login process by calling the proper SDK behavior. The {@link Activity} provided
+     * in this method will be used to start the {@link MercadoLibreActivity} with the proper settings
+     * for the login process and the {@link Activity#onActivityResult(int, int, Intent)} method will
+     * be called with the result code in {@link Activity#RESULT_OK} if the process is completed properly
+     * or the {@link Activity#RESULT_CANCELED} if an error is detected.
+     * If the process is completed properly, the SDK will provide the user's data in an {@link Identity}
+     * object that can be reached by the {@link Meli#getCurrentIdentity(Context context)} method.
+     * Note that if the login process has been executed successfully at least once on the device, then
+     * a false return value occurs and the process is skipped. At this point, you can retrieve the Identity
+     * of the logged user from the method {@link Meli#getCurrentIdentity(Context context)}.
+     *
+     * @param activityClient - an {@link Activity} that will be used as callback receiver. When the process
+     *                       is finished (whether is success or not) the {@link Activity#onActivityResult(int, int, Intent)}
+     *                       callback will be called with the proper result code.
+     * @param requestCode    - the request code used in the {@link Activity#startActivityForResult(Intent, int)} method.
+     * @return - true if the login process has started. If the login process has ben executed successfully at least once
+     * on the device, it skipped and the return value is false.
+     * @deprecated
+     */
+    public static boolean startLogin(@NonNull Activity activityClient, int requestCode) {
+        return startLogin(activityClient, requestCode, AuthUrls.MLA);
     }
 
 
@@ -473,7 +524,7 @@ public final class Meli {
     /**
      * Performs a POST operation to the remote resource exposed by the MercadoLibre API. All POST operations
      * need the user to be previously authorized, that's why you need to authorize the user by using
-     * {@link Meli#startLogin(Activity, int)} before using this method.  This method should
+     * {@link Meli#startLogin(Activity, int, AuthUrls)} before using this method.  This method should
      * not be executed in the UI thread since it performs a network operation.
      *
      * @param path     - the path of the resource to access.
