@@ -192,7 +192,7 @@ public class Shipping {
         private String type;
         @SerializedName("promoted_amount")
         @Expose
-        private Integer promotedAmount;
+        private Float promotedAmount;
 
         public Integer getRate() {
             return rate;
@@ -210,11 +210,11 @@ public class Shipping {
             this.type = type;
         }
 
-        public Integer getPromotedAmount() {
+        public Float getPromotedAmount() {
             return promotedAmount;
         }
 
-        public void setPromotedAmount(Integer promotedAmount) {
+        public void setPromotedAmount(Float promotedAmount) {
             this.promotedAmount = promotedAmount;
         }
 
