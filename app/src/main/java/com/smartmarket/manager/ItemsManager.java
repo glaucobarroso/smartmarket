@@ -1,14 +1,20 @@
-package com.smartmarket;
+package com.smartmarket.manager;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import com.mercadolibre.android.sdk.Identity;
 import com.smartmarket.data.item.Item;
+import com.smartmarket.data.message.PendingMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Glauco on 19/12/2016.
@@ -16,10 +22,8 @@ import java.net.URL;
 
 public class ItemsManager extends Manager {
 
-    private final String GET_ITEM_FORMAT_STR = "/items/%s";
-
-    public ItemsManager(Identity identity) {
-        super(identity);
+    public ItemsManager(Identity identity, Handler handler) {
+        super(identity, handler);
     }
 
     public Item getItem(String itemId) {
@@ -43,6 +47,37 @@ public class ItemsManager extends Manager {
             e.printStackTrace();
         }
         return thumbnail;
+    }
+
+    public List<Bitmap> getItemsThumbnails(List<Item> list) {
+        List<Bitmap> ret = new ArrayList<Bitmap>();
+        for (Item item : list) {
+            ret.add(getItemThumbnail(item));
+        }
+        return ret;
+    }
+
+    public class GetThumbnails extends Thread {
+
+        private List<Item> mList;
+        private int mWhat;
+
+        public GetThumbnails(List<Item> list, int what) {
+            mList = list;
+            mWhat = what;
+        }
+
+        private void sendThumbnailMessage(List<Bitmap> bitmaps) {
+            Message msg = mHandler.obtainMessage();
+            msg.what = mWhat;
+            msg.obj = bitmaps;
+            mHandler.sendMessage(msg);
+        }
+
+        @Override
+        public void run() {
+            sendThumbnailMessage(getItemsThumbnails(mList));
+        }
     }
 
 }

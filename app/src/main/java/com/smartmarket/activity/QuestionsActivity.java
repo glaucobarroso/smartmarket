@@ -1,7 +1,9 @@
-package com.smartmarket;
+package com.smartmarket.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.smartmarket.R;
 
 /**
  * Created by Glauco on 17/12/2016.

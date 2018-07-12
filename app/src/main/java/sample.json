@@ -1,0 +1,170 @@
+{
+  "id": 27586775901,
+  "mode": "me2",
+  "created_by": "receiver",
+  "order_id": 1722560163,
+  "order_cost": 1000.9,
+  "site_id": "MLB",
+  "status": "ready_to_ship",
+  "substatus": "ready_to_print",
+  "status_history": {
+    "date_cancelled": null,
+    "date_delivered": null,
+    "date_first_visit": null,
+    "date_handling": "2018-05-31T10:43:54.000-04:00",
+    "date_not_delivered": null,
+    "date_ready_to_ship": "2018-05-31T10:43:54.000-04:00",
+    "date_shipped": null,
+    "date_returned": null
+  },
+  "date_created": "2018-05-31T10:43:50.000-04:00",
+  "last_updated": "2018-05-31T10:43:54.000-04:00",
+  "tracking_number": "TE101010221064ST",
+  "tracking_method": "Sedex",
+  "service_id": 22,
+  "carrier_info": null,
+  "sender_id": 237975361,
+  "sender_address": {
+    "id": 207530995,
+    "address_line": "Rua Rafael Sampaio 387",
+    "street_name": "Rua Rafael Sampaio",
+    "street_number": "387",
+    "comment": null,
+    "zip_code": "13023240",
+    "city": {
+      "id": "BR-SP-42",
+      "name": "Campinas"
+    },
+    "state": {
+      "id": "BR-SP",
+      "name": "São Paulo"
+    },
+    "country": {
+      "id": "BR",
+      "name": "Brasil"
+    },
+    "neighborhood": {
+      "id": null,
+      "name": "Vila Rossi"
+    },
+    "municipality": {
+      "id": null,
+      "name": null
+    },
+    "agency": null,
+    "types": [
+      "billing",
+      "default_selling_address",
+      "shipping"
+    ],
+    "latitude": -22.89,
+    "longitude": -47.06,
+    "geolocation_type": "RANGE_INTERPOLATED"
+  },
+  "receiver_id": 238007365,
+  "receiver_address": {
+    "id": 265550866,
+    "address_line": "Rua Visconde de Taunay 111",
+    "street_name": "Rua Visconde de Taunay",
+    "street_number": "111",
+    "comment": null,
+    "zip_code": "13023200",
+    "city": {
+      "id": "BR-SP-42",
+      "name": "Campinas"
+    },
+    "state": {
+      "id": "BR-SP",
+      "name": "São Paulo"
+    },
+    "country": {
+      "id": "BR",
+      "name": "Brasil"
+    },
+    "neighborhood": {
+      "id": null,
+      "name": "Vila Itapura"
+    },
+    "municipality": {
+      "id": null,
+      "name": null
+    },
+    "agency": null,
+    "types": [
+      "default_buying_address"
+    ],
+    "latitude": -22.9,
+    "longitude": -47.06,
+    "geolocation_type": "RANGE_INTERPOLATED",
+    "receiver_name": "Teste tes",
+    "receiver_phone": "11 9 84798282"
+  },
+  "shipping_items": [
+    {
+      "id": "MLB850022538",
+      "description": "Mochila Produto De Teste5",
+      "quantity": 1,
+      "dimensions": "7.0x34.0x45.0,1100.0"
+    }
+  ],
+  "shipping_option": {
+    "id": 27554370,
+    "shipping_method_id": 182,
+    "name": "Expresso",
+    "currency_id": "BRL",
+    "cost": 15.9,
+    "delivery_type": "estimated",
+    "list_cost": 15.9,
+    "estimated_schedule_limit": {
+      "date": null
+    },
+    "estimated_handling_limit": {
+      "date": "2018-06-04T00:00:00.000-03:00"
+    },
+    "estimated_delivery_final": {
+      "date": "2018-10-09T00:00:00.000-03:00",
+      "offset": 1920
+    },
+    "estimated_delivery_limit": {
+      "date": "2018-08-13T00:00:00.000-03:00",
+      "offset": 960
+    },
+    "estimated_delivery_extended": {
+      "date": "2018-06-22T00:00:00.000-03:00",
+      "offset": 120
+    },
+    "estimated_delivery_time": {
+      "type": "unknown_frame",
+      "date": "2018-06-12T00:00:00.000-03:00",
+      "unit": "hour",
+      "offset": {
+        "date": "2018-06-15T00:00:00.000-03:00",
+        "shipping": 72
+      },
+      "time_frame": {
+        "from": null,
+        "to": null
+      },
+      "pay_before": null,
+      "shipping": 144,
+      "handling": null,
+      "schedule": null
+    }
+  },
+  "comments": null,
+  "date_first_printed": null,
+  "market_place": "MELI",
+  "return_details": null,
+  "tags": [],
+  "type": "forward",
+  "application_id": null,
+  "return_tracking_number": null,
+  "cost_components": {
+    "special_discount": 0,
+    "loyal_discount": 0,
+    "compensation": 0
+  },
+  "logistic_type": "drop_off",
+  "substatus_history": [],
+  "delay": []
+}

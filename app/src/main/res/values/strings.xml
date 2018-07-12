@@ -21,4 +21,7 @@
     <string name="loading">Carregando...</string>
     <string name="no_questions">Não há perguntas não respondidas =)</string>
     <string name="get_questions_failed">Não foi possível receber as perguntas</string>
+    <string name="loading_msg">Loading...</string>
+    <string name="no_data_msg">There is no data to be displayed</string>
+    <string name="failed_msg">Request failed</string>
 </resources>

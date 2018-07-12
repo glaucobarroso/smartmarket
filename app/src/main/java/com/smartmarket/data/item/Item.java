@@ -2,6 +2,7 @@ package com.smartmarket.data.item;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.smartmarket.data.BaseData;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * Created by Glauco on 19/12/2016.
  */
 
-public class Item {
+public class Item extends BaseData {
 
     @SerializedName("id")
     @Expose

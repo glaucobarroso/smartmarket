@@ -17,13 +17,13 @@ import java.util.List;
  * Created by Glauco on 16/12/2016.
  */
 
-public class QuestionItemAdapter extends ArrayAdapter<QuestionUIData> {
+public class DefaultAdapter extends ArrayAdapter<QuestionUIData> {
 
-    public QuestionItemAdapter(Context context, int textViewResourceId) {
+    public DefaultAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
     }
 
-    public QuestionItemAdapter(Context context, int resource, List<QuestionUIData> items) {
+    public DefaultAdapter(Context context, int resource, List<QuestionUIData> items) {
         super(context, resource, items);
     }
 

@@ -1,14 +1,16 @@
-package com.smartmarket;
+package com.smartmarket.manager;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.os.Handler;
 
-import com.google.gson.Gson;
-import com.mercadolibre.android.sdk.AccessToken;
 import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;
+import com.smartmarket.R;
 import com.smartmarket.data.question.Questions;
 import com.smartmarket.data.question.Shipping;
+import com.smartmarket.ui.QuestionUIData;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,8 +39,8 @@ public class QuestionManager extends Manager{
     private final String HOUR_UNIT = "hour";
     public final int DAY_HOURS = 24;
 
-    public QuestionManager(Identity identity) {
-        super(identity);
+    public QuestionManager(Identity identity, Handler handler) {
+        super(identity, handler);
     }
 
     public int answerQuestion(Long questionId, String text) {
@@ -118,7 +120,7 @@ public class QuestionManager extends Manager{
                             daysCount++;
                             shippingTimeOffsetDays = (shippingTimeOffset) / DAY_HOURS;
                         }
-                        // ugly workaround to force float with comma no matter which is the device's locale
+                        // workaround to force float with comma no matter which is the device's locale
                         String costStr = String.format("%.02f", cost).replace('.', ',');
 
                         boolean append = false;

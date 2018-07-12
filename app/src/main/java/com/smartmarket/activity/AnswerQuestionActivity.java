@@ -1,4 +1,4 @@
-package com.smartmarket;
+package com.smartmarket.activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -11,21 +11,19 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.mercadolibre.android.sdk.ApiResponse;
 import com.mercadolibre.android.sdk.Meli;
+import com.smartmarket.ChatItemAdapter;
+import com.smartmarket.manager.QuestionManager;
+import com.smartmarket.R;
 import com.smartmarket.data.question.ChatMessage;
 import com.smartmarket.data.question.Questions;
 import com.smartmarket.data.question.Shipping;
 import com.smartmarket.ui.QuestionUIData;
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +125,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
     }
 
     private void addShippingMessage(String question) {
-        final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this));
+        final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this), mHandler);
         final String cep = questionManager.getCep(question);
         if (cep != null) {
             new Thread(new Runnable() {
@@ -154,7 +152,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.answer_button:
-                final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this));
+                final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this), mHandler);
                 final String answerText;
                 showAnswerSendingDialog();
                 try {
@@ -215,7 +213,7 @@ public class AnswerQuestionActivity extends AppCompatActivity implements View.On
     }
 
     private void loadChat(final String itemId, final Integer buyerId) {
-        final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this));
+        final QuestionManager questionManager = new QuestionManager(Meli.getCurrentIdentity(this), mHandler);
         new Thread(new Runnable() {
             @Override
             public void run() {

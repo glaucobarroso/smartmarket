@@ -1,4 +1,4 @@
-package com.smartmarket;
+package com.smartmarket.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +16,10 @@ import android.widget.TextView;
 
 import com.mercadolibre.android.sdk.Identity;
 import com.mercadolibre.android.sdk.Meli;
+import com.smartmarket.manager.ItemsManager;
+import com.smartmarket.DefaultAdapter;
+import com.smartmarket.manager.QuestionManager;
+import com.smartmarket.R;
 import com.smartmarket.data.item.Item;
 import com.smartmarket.data.question.Questions;
 import com.smartmarket.ui.QuestionUIData;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     noQuestions.setText(mGetQuestionsFailed);
                     mProgress.dismiss();
                 } else if (mQuestionsDataList.size() > 0) {
-                    QuestionItemAdapter adapter = new QuestionItemAdapter(getApplicationContext(), R.layout.question_item, mQuestionsDataList);
+                    DefaultAdapter adapter = new DefaultAdapter(getApplicationContext(), R.layout.question_item, mQuestionsDataList);
                     mNoQuestionsView.setVisibility(View.GONE);
                     mListView.setVisibility(View.VISIBLE);
                     mListView.setAdapter(adapter);
@@ -113,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             Log.d(TAG, "Running...");
-            QuestionManager questionManager = new QuestionManager(mIdentity);
-            final ItemsManager itemsManager = new ItemsManager(mIdentity);
+            QuestionManager questionManager = new QuestionManager(mIdentity, mHandler);
+            final ItemsManager itemsManager = new ItemsManager(mIdentity, mHandler);
             final ConcurrentHashMap<String, QuestionUIData> uiDataHashMap = new ConcurrentHashMap<String, QuestionUIData>();
             List<Questions.Question> questions = questionManager.getQuestions();
             if (questions != null) {
@@ -190,5 +193,10 @@ public class MainActivity extends AppCompatActivity {
         mProgress.setMessage(mQuestionsLoading);
         mProgress.setCancelable(false); // disable dismiss by tapping outside of the dialog
         mProgress.show();
+    }
+
+    public void messagesClick(View v) {
+        final Intent intent = new Intent(this, DefaultListActivity.class);
+        startActivity(intent);
     }
 }
