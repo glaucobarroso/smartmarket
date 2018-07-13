@@ -5,6 +5,7 @@ import android.os.Message;
 
 import com.google.gson.Gson;
 import com.mercadolibre.android.sdk.Identity;
+import com.smartmarket.activity.DefaultListActivity;
 import com.smartmarket.data.message.PendingMessage;
 
 import java.util.Collections;
@@ -35,7 +36,7 @@ public class MessagesManager extends Manager {
         public void run() {
             PendingMessage pendingMessages = getPendingMessages();
             Message msg = mHandler.obtainMessage();
-            msg.what = GET_PENDING_MESSAGE;
+            msg.what = DefaultListActivity.GET_PENDING_MESSAGE;
             msg.obj = pendingMessages;
             mHandler.sendMessage(msg);
         }

@@ -3,6 +3,7 @@ package com.smartmarket.manager;
 import android.os.Handler;
 import android.os.Message;
 import com.mercadolibre.android.sdk.Identity;
+import com.smartmarket.activity.DefaultListActivity;
 import com.smartmarket.data.question.Shipping;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ShippingManager extends Manager {
         public void run() {
             List<Shipping> shipments = getShipments(mShipmentIdList);
             Message msg = mHandler.obtainMessage();
-            msg.what = GET_PENDING_MESSAGE;
+            msg.what = DefaultListActivity.GET_PENDING_MESSAGE;
             msg.obj = shipments;
             mHandler.sendMessage(msg);
         }

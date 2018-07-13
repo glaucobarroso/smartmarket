@@ -12,155 +12,55 @@ import java.util.List;
 
 public class Item extends BaseData {
 
-    @SerializedName("id")
-    @Expose
     private String id;
-    @SerializedName("site_id")
-    @Expose
     private String siteId;
-    @SerializedName("title")
-    @Expose
     private String title;
-    @SerializedName("subtitle")
-    @Expose
     private Object subtitle;
-    @SerializedName("seller_id")
-    @Expose
     private Integer sellerId;
-    @SerializedName("category_id")
-    @Expose
     private String categoryId;
-    @SerializedName("official_store_id")
-    @Expose
     private Object officialStoreId;
-    @SerializedName("price")
-    @Expose
     private Float price;
-    @SerializedName("base_price")
-    @Expose
     private Float basePrice;
-    @SerializedName("original_price")
-    @Expose
     private Object originalPrice;
-    @SerializedName("currency_id")
-    @Expose
     private String currencyId;
-    @SerializedName("initial_quantity")
-    @Expose
     private Integer initialQuantity;
-    @SerializedName("available_quantity")
-    @Expose
     private Integer availableQuantity;
-    @SerializedName("sold_quantity")
-    @Expose
     private Integer soldQuantity;
-    @SerializedName("buying_mode")
-    @Expose
     private String buyingMode;
-    @SerializedName("listing_type_id")
-    @Expose
     private String listingTypeId;
-    @SerializedName("start_time")
-    @Expose
     private String startTime;
-    @SerializedName("stop_time")
-    @Expose
     private String stopTime;
-    @SerializedName("condition")
-    @Expose
     private String condition;
-    @SerializedName("permalink")
-    @Expose
     private String permalink;
-    @SerializedName("thumbnail")
-    @Expose
     private String thumbnail;
-    @SerializedName("secure_thumbnail")
-    @Expose
     private String secureThumbnail;
-    @SerializedName("pictures")
-    @Expose
     private List<Picture> pictures = null;
-    @SerializedName("video_id")
-    @Expose
     private Object videoId;
-    @SerializedName("descriptions")
-    @Expose
     private List<Description> descriptions = null;
-    @SerializedName("accepts_mercadopago")
-    @Expose
     private Boolean acceptsMercadopago;
-    @SerializedName("non_mercado_pago_payment_methods")
-    @Expose
     private List<Object> nonMercadoPagoPaymentMethods = null;
-    @SerializedName("shipping")
-    @Expose
     private Shipping shipping;
-    @SerializedName("international_delivery_mode")
-    @Expose
     private String internationalDeliveryMode;
-    @SerializedName("seller_address")
-    @Expose
     private SellerAddress sellerAddress;
-    @SerializedName("seller_contact")
-    @Expose
     private Object sellerContact;
-    @SerializedName("location")
-    @Expose
     private Location location;
-    @SerializedName("geolocation")
-    @Expose
     private Geolocation geolocation;
-    @SerializedName("coverage_areas")
-    @Expose
     private List<Object> coverageAreas = null;
-    @SerializedName("attributes")
-    @Expose
     private List<Attribute> attributes = null;
-    @SerializedName("warnings")
-    @Expose
     private List<Object> warnings = null;
-    @SerializedName("listing_source")
-    @Expose
     private String listingSource;
-    @SerializedName("variations")
-    @Expose
     private List<Object> variations = null;
-    @SerializedName("status")
-    @Expose
     private String status;
-    @SerializedName("sub_status")
-    @Expose
     private List<Object> subStatus = null;
-    @SerializedName("tags")
-    @Expose
     private List<String> tags = null;
-    @SerializedName("warranty")
-    @Expose
     private Object warranty;
-    @SerializedName("catalog_product_id")
-    @Expose
     private Object catalogProductId;
-    @SerializedName("domain_id")
-    @Expose
     private Object domainId;
-    @SerializedName("parent_item_id")
-    @Expose
     private Object parentItemId;
-    @SerializedName("differential_pricing")
-    @Expose
     private Object differentialPricing;
-    @SerializedName("deal_ids")
-    @Expose
     private List<Object> dealIds = null;
-    @SerializedName("automatic_relist")
-    @Expose
     private Boolean automaticRelist;
-    @SerializedName("date_created")
-    @Expose
     private String dateCreated;
-    @SerializedName("last_updated")
-    @Expose
     private String lastUpdated;
 
     public String getId() {
@@ -565,23 +465,11 @@ public class Item extends BaseData {
 
     public class Attribute {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
-        @SerializedName("value_id")
-        @Expose
         private String valueId;
-        @SerializedName("value_name")
-        @Expose
         private String valueName;
-        @SerializedName("attribute_group_id")
-        @Expose
         private String attributeGroupId;
-        @SerializedName("attribute_group_name")
-        @Expose
         private String attributeGroupName;
 
         public String getId() {
@@ -636,11 +524,7 @@ public class Item extends BaseData {
 
     public class City {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
 
         public String getId() {
@@ -663,11 +547,7 @@ public class Item extends BaseData {
 
     public class City_ {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
 
         public String getId() {
@@ -690,11 +570,7 @@ public class Item extends BaseData {
 
     public class Country {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
 
         public String getId() {
@@ -717,8 +593,6 @@ public class Item extends BaseData {
 
     public class Description {
 
-        @SerializedName("id")
-        @Expose
         private String id;
 
         public String getId() {
@@ -733,11 +607,7 @@ public class Item extends BaseData {
 
     public class Geolocation {
 
-        @SerializedName("latitude")
-        @Expose
         private Double latitude;
-        @SerializedName("longitude")
-        @Expose
         private Double longitude;
 
         public Double getLatitude() {
@@ -765,11 +635,7 @@ public class Item extends BaseData {
 
     public class Neighborhood {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
 
         public String getId() {
@@ -792,23 +658,11 @@ public class Item extends BaseData {
 
     public class Picture {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("url")
-        @Expose
         private String url;
-        @SerializedName("secure_url")
-        @Expose
         private String secureUrl;
-        @SerializedName("size")
-        @Expose
         private String size;
-        @SerializedName("max_size")
-        @Expose
         private String maxSize;
-        @SerializedName("quality")
-        @Expose
         private String quality;
 
         public String getId() {
@@ -863,14 +717,8 @@ public class Item extends BaseData {
 
     public class SearchLocation {
 
-        @SerializedName("neighborhood")
-        @Expose
         private Neighborhood neighborhood;
-        @SerializedName("city")
-        @Expose
         private City_ city;
-        @SerializedName("state")
-        @Expose
         private State_ state;
 
         public Neighborhood getNeighborhood() {
@@ -901,35 +749,15 @@ public class Item extends BaseData {
 
     public class SellerAddress {
 
-        @SerializedName("id")
-        @Expose
         private Integer id;
-        @SerializedName("comment")
-        @Expose
         private String comment;
-        @SerializedName("address_line")
-        @Expose
         private String addressLine;
-        @SerializedName("zip_code")
-        @Expose
         private String zipCode;
-        @SerializedName("city")
-        @Expose
         private City city;
-        @SerializedName("state")
-        @Expose
         private State state;
-        @SerializedName("country")
-        @Expose
         private Country country;
-        @SerializedName("latitude")
-        @Expose
         private Double latitude;
-        @SerializedName("longitude")
-        @Expose
         private Double longitude;
-        @SerializedName("search_location")
-        @Expose
         private SearchLocation searchLocation;
 
         public Integer getId() {
@@ -1016,23 +844,11 @@ public class Item extends BaseData {
 
     public class Shipping {
 
-        @SerializedName("mode")
-        @Expose
         private String mode;
-        @SerializedName("local_pick_up")
-        @Expose
         private Boolean localPickUp;
-        @SerializedName("free_shipping")
-        @Expose
         private Boolean freeShipping;
-        @SerializedName("methods")
-        @Expose
         private Object methods;
-        @SerializedName("dimensions")
-        @Expose
         private Object dimensions;
-        @SerializedName("tags")
-        @Expose
         private List<String> tags = null;
 
         public String getMode() {
@@ -1087,11 +903,7 @@ public class Item extends BaseData {
 
     public class State {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
 
         public String getId() {
@@ -1114,11 +926,7 @@ public class Item extends BaseData {
 
     public class State_ {
 
-        @SerializedName("id")
-        @Expose
         private String id;
-        @SerializedName("name")
-        @Expose
         private String name;
 
         public String getId() {

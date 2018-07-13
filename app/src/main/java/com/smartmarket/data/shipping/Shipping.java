@@ -47,11 +47,6 @@ public class Shipping {
         public String name;
     }
 
-    public class City_ {
-        public String id;
-        public String name;
-    }
-
     public class CostComponents {
         public Long specialDiscount;
         public Long loyalDiscount;
@@ -59,11 +54,6 @@ public class Shipping {
     }
 
     public class Country {
-        public String id;
-        public String name;
-    }
-
-    public class Country_ {
         public String id;
         public String name;
     }
@@ -126,9 +116,9 @@ public class Shipping {
         public String streetNumber;
         public Object comment;
         public String zipCode;
-        public City_ city;
+        public City city;
         public State state;
-        public Country_ country;
+        public Country country;
         public Neighborhood neighborhood;
         public Municipality municipality;
         public Object agency;

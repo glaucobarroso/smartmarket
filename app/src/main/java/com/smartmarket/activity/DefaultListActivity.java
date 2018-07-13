@@ -49,11 +49,11 @@ public class DefaultListActivity extends AppCompatActivity {
     private ShippingManager mShippingManager;
     private Identity mIdentity;
     private Handler mHandler;
-    private final static int GET_PENDING_MESSAGE = 0;
-    private final static int GET_ORDERS = 1;
-    private final static int GET_ITEMS = 2;
-    private final static int GET_THUMBNAILS = 3;
-    private final static int GET_MESSAGES = 4;
+    public final static int GET_PENDING_MESSAGE = 0;
+    public final static int GET_ORDERS = 1;
+    public final static int GET_ITEMS = 2;
+    public final static int GET_THUMBNAILS = 3;
+    public final static int GET_MESSAGES = 4;
     List<String> mItemList = new ArrayList<>();
     private List<Order> mOrders;
     private List<Item> mItems;
@@ -160,7 +160,7 @@ public class DefaultListActivity extends AppCompatActivity {
                     mGetItemsTrigger++;
                     ArrayList<String> messagesJsonList = msg.getData().getStringArrayList(Manager.JSON_LIST);
                     if (mGetItemsTrigger == ITEMS_TRIGGER_LIMIT) {
-                        mManager.new GetList(Manager.GET_MESSAGE_FORMAT_STR, mItemList, GET_ITEMS, false);
+                        mManager.new GetList(Manager.GET_ITEM_FORMAT_STR, mItemList, GET_ITEMS, false);
                         mGetItemsTrigger = 0;
                     }
                     break;
